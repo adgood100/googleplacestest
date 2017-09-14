@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Google Places Data</title>
+</head>
+
+<body>
+  <!-- Retrieved data will be dumped here -->
+  <div class="address"></div>
+  <div class="lat1"></div>
+  <div class="long1"></div>
+  <div class="lat2"></div>
+  <div class="long2"></div>
+  <div class="lat3"></div>
+  <div class="long3"></div>
+  <div class="icon"></div>
+  <div class="name"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // This is our API key
+    var APIKey = "AIzaSyA42oX5QU_oWTmDhLkTLxE9L9L6ku_HcYU";
+	var queryString = "restaurants+in+Sydney";
+
+    // Here we are building the URL we need to query the database
+    var queryURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
+		queryString + "&key=" +
+		APIKey;
+
+    // Here we run our AJAX call to the OpenWeatherMap API
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+      // We store all of the retrieved data inside of an object called "response"
+      .done(function(response) {
+
+        // Log the queryURL
+        console.log(queryURL);
+
+        // Log the resulting object
+        console.log(response);
+
+        // Transfer content to HTML
+        $(".address").html("<h1>" + response.results.formatted_address + " Address Details</h1>");
+        $(".lat1").html("Location Latitude: " + response.results.geometry.location.lat);
+		$(".long1").html("Location Longitude: " + response.results.geometry.location.lng);
+		$(".lat2").html("Viewport Northeast Latitude: " + response.results.geometry.viewport.northeast.lat);
+		$(".long2").html("Viewport Northeast Longitude: " + response.results.geometry.viewport.northeast.lng);
+		$(".lat3").html("Viewport Southeast Latitude: " + response.results.geometry.viewport.southeast.lat);
+		$(".long3").html("Viewport Southeast Longitude: " + response.results.geometry.viewport.southeast.lng);
+        $(".icon").html("Icon: " + response.results.icon);
+        $(".name").html("Name: " + response.results.name);
+
+        // Log the data in the console as well
+        console.log("Address: " + response.results.formatted_address);
+        console.log("Icon: " + response.results.icon);
+        console.log("Name: " + response.results.name);
+      });
+  </script>
+</body>
+
+</html>
